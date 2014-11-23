@@ -13,6 +13,7 @@
 		29756A611A21E324009773F2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29756A5F1A21E324009773F2 /* LaunchScreen.xib */; };
 		29756A6D1A21E324009773F2 /* BlocBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 29756A6C1A21E324009773F2 /* BlocBrowserTests.m */; };
 		29756A781A21EACF009773F2 /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29756A771A21EACF009773F2 /* WebBrowserViewController.m */; };
+		29DC58221A222944002E25FC /* AwesomeFloatingToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DC58211A222944002E25FC /* AwesomeFloatingToolbar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,8 @@
 		29756A6C1A21E324009773F2 /* BlocBrowserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlocBrowserTests.m; sourceTree = "<group>"; };
 		29756A761A21EACF009773F2 /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebBrowserViewController.h; sourceTree = "<group>"; };
 		29756A771A21EACF009773F2 /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowserViewController.m; sourceTree = "<group>"; };
+		29DC58201A222944002E25FC /* AwesomeFloatingToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwesomeFloatingToolbar.h; sourceTree = "<group>"; };
+		29DC58211A222944002E25FC /* AwesomeFloatingToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwesomeFloatingToolbar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 			children = (
 				29756A541A21E324009773F2 /* AppDelegate.h */,
 				29756A551A21E324009773F2 /* AppDelegate.m */,
+				29DC58201A222944002E25FC /* AwesomeFloatingToolbar.h */,
+				29DC58211A222944002E25FC /* AwesomeFloatingToolbar.m */,
 				29756A761A21EACF009773F2 /* WebBrowserViewController.h */,
 				29756A771A21EACF009773F2 /* WebBrowserViewController.m */,
 				29756A5D1A21E324009773F2 /* Images.xcassets */,
@@ -218,6 +223,7 @@
 				29756A561A21E324009773F2 /* AppDelegate.m in Sources */,
 				29756A781A21EACF009773F2 /* WebBrowserViewController.m in Sources */,
 				29756A531A21E324009773F2 /* main.m in Sources */,
+				29DC58221A222944002E25FC /* AwesomeFloatingToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +408,7 @@
 				29756A721A21E324009773F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		29756A731A21E324009773F2 /* Build configuration list for PBXNativeTarget "BlocBrowserTests" */ = {
 			isa = XCConfigurationList;
@@ -410,6 +417,7 @@
 				29756A751A21E324009773F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

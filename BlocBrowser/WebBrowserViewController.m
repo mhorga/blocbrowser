@@ -170,4 +170,47 @@
     }
 }
 
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
+    
+    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
+    }
+}
+
+/*
+ - Add a pinch gesture recognizer to allow the user to resize the toolbar.
+ - Add a long press gesture recognizer that rotates the background colors when fired.
+ - Because the UITapGestureRecognizer doesn't have started and ended states, the labels no longer dim and light up when you tap on them. Remove the labels and tap gesture recognizers, and replace labels with UIButtons to resolve this.
+ */
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, CGRectGetWidth(toolbar.frame)*scale, CGRectGetHeight(toolbar.frame)*scale);
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
+    }
+}
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToLongPress:(NSTimeInterval)time {
+    
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+

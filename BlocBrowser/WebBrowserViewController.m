@@ -40,6 +40,7 @@
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.textField.placeholder = NSLocalizedString(@"Website URL or text to search for", @"Placeholder text field");
     self.textField.backgroundColor = [UIColor colorWithWhite:220/255.0f alpha:1];
+    self.textField.textAlignment = 1;
     self.textField.delegate = self;
     
     self.awesomeToolbar = [[AwesomeFloatingToolbar alloc] initWithFourTitles:@[kWebBrowserBackString, kWebBrowserForwardString, kWebBrowserStopString, kWebBrowserRefreshString]];
@@ -62,8 +63,6 @@
 }
 
 - (void) viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
     // First, calculate some dimensions.
     static const CGFloat itemHeight = 50;
     CGFloat width = CGRectGetWidth(self.view.bounds);
@@ -72,7 +71,10 @@
     // Now, assign the frames
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webview.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
-    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
+    
+    if (CGRectIsEmpty(self.awesomeToolbar.frame)) {
+        self.awesomeToolbar.frame = CGRectMake(20, 100, 200, 60);
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -113,15 +115,56 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-                           message:[error localizedDescription] delegate:nil
-                           cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
-    [alert show];
+    if (error.code != -999) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles: nil];
+        [alert show];
+    }
     [self updateButtonsAndTitle];
     self.frameCount--;
 }
 
+#pragma mark - AwesomeFloatingToolbarDelegate
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didSelectButtonWithTitle:(NSString *)title {
+    if ([title isEqual:kWebBrowserBackString]) {
+        [self.webview goBack];
+    } else if ([title isEqual:kWebBrowserForwardString]) {
+        [self.webview goForward];
+    } else if ([title isEqual:kWebBrowserStopString]) {
+        [self.webview stopLoading];
+    } else if ([title isEqual:kWebBrowserRefreshString]) {
+        [self.webview reload];
+    }
+}
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
+    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    [self modifyViewsFrame:potentialNewFrame];
+}
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, toolbar.frame.size.width * scale, toolbar.frame.size.height * scale);
+    
+    [self modifyViewsFrame:potentialNewFrame];
+}
+
+-(void) didTryToLongPress:(AwesomeFloatingToolbar *)toolbar {
+    
+    [toolbar rotateToolbarBackgroundColor];
+}
+
 #pragma mark - Miscellaneous
+
+-(void)modifyViewsFrame:(CGRect)potentialNewFrame {
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        self.awesomeToolbar.frame = potentialNewFrame;
+    }
+}
 
 - (void) updateButtonsAndTitle {
     NSString *webpageTitle = [self.webview stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -156,61 +199,4 @@
     [self updateButtonsAndTitle];
 }
 
-#pragma mark - BLCAwesomeFloatingToolbarDelegate
-
-- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didSelectButtonWithTitle:(NSString *)title {
-    if ([title isEqual:kWebBrowserBackString]) {
-        [self.webview goBack];
-    } else if ([title isEqual:kWebBrowserForwardString]) {
-        [self.webview goForward];
-    } else if ([title isEqual:kWebBrowserStopString]) {
-        [self.webview stopLoading];
-    } else if ([title isEqual:kWebBrowserRefreshString]) {
-        [self.webview reload];
-    }
-}
-
-- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset {
-    CGPoint startingPoint = toolbar.frame.origin;
-    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
-    
-    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
-    
-    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
-        toolbar.frame = potentialNewFrame;
-    }
-}
-
-/*
- - Add a pinch gesture recognizer to allow the user to resize the toolbar.
- - Add a long press gesture recognizer that rotates the background colors when fired.
- - Because the UITapGestureRecognizer doesn't have started and ended states, the labels no longer dim and light up when you tap on them. Remove the labels and tap gesture recognizers, and replace labels with UIButtons to resolve this.
- */
-
-- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
-    CGPoint startingPoint = toolbar.frame.origin;
-    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, CGRectGetWidth(toolbar.frame)*scale, CGRectGetHeight(toolbar.frame)*scale);
-    
-    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
-        toolbar.frame = potentialNewFrame;
-    }
-}
-
-- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToLongPress:(NSTimeInterval)time {
-    
-}
-
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-

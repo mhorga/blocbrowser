@@ -51,7 +51,7 @@
             [button setTitle:titleForThisButton forState:UIControlStateNormal];
             button.backgroundColor = colorForThisButton;
             
-            [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpOutside];
+            [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
             
             [buttonsArray addObject:button];
         }
